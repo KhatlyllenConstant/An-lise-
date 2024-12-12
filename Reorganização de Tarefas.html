@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reorganização de Tarefas</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f8f9fa;
+      margin: 0;
+      padding: 20px;
+      color: #333;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 24px;
+      margin-bottom: 20px;
+      color: #444;
+    }
+
+    .projects {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .project {
+      background-color: #ffffff;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      padding: 15px;
+    }
+
+    .project h2 {
+      font-size: 18px;
+      color: #555;
+      margin-bottom: 10px;
+      border-bottom: 2px solid #eee;
+      padding-bottom: 5px;
+    }
+
+    .task-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      min-height: 50px;
+      border: 2px dashed #ddd;
+      background-color: #f8f9fa;
+      border-radius: 5px;
+    }
+
+    .task {
+      background-color: #ffffff;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      padding: 10px;
+      margin-bottom: 10px;
+      cursor: grab;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      transition: transform 0.2s;
+    }
+
+    .task:active {
+      cursor: grabbing;
+      transform: scale(1.03);
+    }
+
+    .drag-over {
+      background-color: #e9ecef;
+      border: 2px dashed #6c757d;
+    }
+
+    .add-task {
+      display: flex;
+      margin-top: 10px;
+      gap: 10px;
+    }
+
+    input {
+      flex: 1;
+      padding: 10px;
+      font-size: 14px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    button {
+      padding: 10px 15px;
+      font-size: 14px;
+      border: none;
+      background-color: #6c757d;
+      color: #fff;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #5a6268;
+    }
+  </style>
+</head>
+<body>
+  <h1>Reorganização de Tarefas</h1>
+
+  <div class="projects" id="projects">
+    <!-- Exemplo de um projeto -->
+    <div class="project">
+      <h2>Projeto 1</h2>
+      <ul class="task-list" id="taskList1"></ul>
+      <div class="add-task">
+        <input type="text" id="newTaskInput1" placeholder="Digite o nome da nova tarefa...">
+        <button onclick="addTask('taskList1', 'newTaskInput1')">Adicionar Tarefa</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="add-project">
+    <input type="text" id="newProjectInput" placeholder="Digite o nome do novo projeto...">
+    <button onclick="addProject()">Adicionar Projeto</button>
+  </div>
+
+  <script>
+    const projectsContainer = document.getElementById('projects');
+
+    // Função para adicionar projeto
+    function addProject() {
+      const projectName = document.getElementById('newProjectInput').value.trim();
+      if (projectName) {
+        const projectDiv = createProjectElement(projectName);
+        projectsContainer.appendChild(projectDiv);
+        document.getElementById('newProjectInput').value = '';
+      } else {
+        alert('Por favor, digite o nome do projeto.');
+      }
+    }
+
+    // Função para criar elemento de projeto
+    function createProjectElement(projectName) {
+      const projectDiv = document.createElement('div');
+      projectDiv.classList.add('project');
+
+      const projectHeader = document.createElement('h2');
+      projectHeader.textContent = projectName;
+
+      const taskList = document.createElement('ul');
+      taskList.classList.add('task-list');
+      const taskListId = `taskList${Date.now()}`;
+      taskList.id = taskListId;
+
+      // Adicionar tarefas ao projeto
+      const addTaskDiv = document.createElement('div');
+      addTaskDiv.classList.add('add-task');
+      const taskInput = document.createElement('input');
+      taskInput.id = `newTaskInput${Date.now()}`;
+      taskInput.placeholder = 'Digite o nome da nova tarefa...';
+
+      const addTaskButton = document.createElement('button');
+      addTaskButton.textContent = 'Adicionar Tarefa';
+      addTaskButton.onclick = () => addTask(taskList.id, taskInput.id);
+
+      addTaskDiv.appendChild(taskInput);
+      addTaskDiv.appendChild(addTaskButton);
+
+      projectDiv.appendChild(projectHeader);
+      projectDiv.appendChild(taskList);
+      projectDiv.appendChild(addTaskDiv);
+
+      return projectDiv;
+    }
+
+    // Função para adicionar tarefa
+    function addTask(taskListId, taskInputId) {
+      const taskList = document.getElementById(taskListId);
+      const taskName = document.getElementById(taskInputId).value.trim();
+      if (taskName) {
+        const task = createTaskElement(taskName);
+        taskList.appendChild(task);
+        document.getElementById(taskInputId).value = '';
+      } else {
+        alert('Por favor, digite o nome da tarefa.');
+      }
+    }
+
+    // Função para criar elemento de tarefa
+    function createTaskElement(taskName) {
+      const taskItem = document.createElement('li');
+      taskItem.classList.add('task');
+      taskItem.textContent = taskName;
+      taskItem.draggable = true;
+
+      // Eventos de drag and drop
+      taskItem.addEventListener('dragstart', dragStart);
+      taskItem.addEventListener('dragend', dragEnd);
+
+      return taskItem;
+    }
+
+    // Funções de drag and drop
+    let draggedTask = null;
+
+    function dragStart(e) {
+      draggedTask = this;
+      setTimeout(() => (this.style.display = 'none'), 0);
+    }
+
+    function dragEnd() {
+      this.style.display = 'block';
+      draggedTask = null;
+    }
+
+    document.addEventListener('dragover', (e) => e.preventDefault());
+
+    document.addEventListener('dragenter', (e) => {
+      if (e.target.classList.contains('task-list')) {
+        e.target.classList.add('drag-over');
+      }
+    });
+
+    document.addEventListener('dragleave', (e) => {
+      if (e.target.classList.contains('task-list')) {
+        e.target.classList.remove('drag-over');
+      }
+    });
+
+    document.addEventListener('drop', (e) => {
+      if (e.target.classList.contains('task-list')) {
+        e.target.classList.remove('drag-over');
+        if (draggedTask) {
+          e.target.appendChild(draggedTask);
+        }
+      }
+    });
+  </script>
+</body>
+</html>
