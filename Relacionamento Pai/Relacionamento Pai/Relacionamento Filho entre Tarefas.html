@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hierarquia de Tarefas</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f8f9fa;
+      margin: 0;
+      padding: 20px;
+      color: #333;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 24px;
+      margin-bottom: 20px;
+      color: #444;
+    }
+
+    .task-container {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .task-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .task {
+      background-color: #ffffff;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      padding: 10px;
+      margin-bottom: 10px;
+      position: relative;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .task .actions {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+    }
+
+    .task .actions button {
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      padding: 5px;
+      font-size: 12px;
+      margin-left: 5px;
+      cursor: pointer;
+    }
+
+    .task .actions button:hover {
+      background-color: #0056b3;
+    }
+
+    .subtasks {
+      margin-left: 20px;
+      margin-top: 10px;
+      border-left: 2px solid #ddd;
+      padding-left: 10px;
+    }
+
+    .add-task {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    .add-task input {
+      flex: 1;
+      padding: 10px;
+      font-size: 14px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      margin-right: 10px;
+    }
+
+    .add-task button {
+      padding: 10px 15px;
+      font-size: 14px;
+      border: none;
+      background-color: #6c757d;
+      color: #fff;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .add-task button:hover {
+      background-color: #5a6268;
+    }
+  </style>
+</head>
+<body>
+  <h1>Hierarquia de Tarefas</h1>
+
+  <div class="task-container">
+    <ul class="task-list" id="taskList">
+      <!-- Lista principal de tarefas -->
+    </ul>
+  </div>
+
+  <div class="add-task">
+    <input type="text" id="newTaskInput" placeholder="Digite o nome da nova tarefa...">
+    <button onclick="addTask()">Adicionar Tarefa</button>
+  </div>
+
+  <script>
+    // Função para criar um novo elemento de tarefa
+    function createTaskElement(taskName) {
+      const task = document.createElement('li');
+      task.classList.add('task');
+
+      const taskContent = document.createElement('div');
+      taskContent.textContent = taskName;
+
+      const actions = document.createElement('div');
+      actions.classList.add('actions');
+
+      const addSubtaskButton = document.createElement('button');
+      addSubtaskButton.textContent = 'Adicionar Subtarefa';
+      addSubtaskButton.onclick = function () {
+        const subtaskName = prompt('Digite o nome da subtarefa:');
+        if (subtaskName) {
+          const subtaskList = task.querySelector('.subtasks') || createSubtaskContainer(task);
+          const subtask = createTaskElement(subtaskName);
+          subtaskList.appendChild(subtask);
+        }
+      };
+
+      const deleteButton = document.createElement('button');
+      deleteButton.textContent = 'Excluir';
+      deleteButton.onclick = function () {
+        task.parentNode.removeChild(task);
+      };
+
+      actions.appendChild(addSubtaskButton);
+      actions.appendChild(deleteButton);
+      task.appendChild(taskContent);
+      task.appendChild(actions);
+
+      return task;
+    }
+
+    // Função para criar o contêiner de subtarefas
+    function createSubtaskContainer(parentTask) {
+      const subtaskContainer = document.createElement('ul');
+      subtaskContainer.classList.add('subtasks');
+      parentTask.appendChild(subtaskContainer);
+      return subtaskContainer;
+    }
+
+    // Função para adicionar uma nova tarefa na lista principal
+    function addTask() {
+      const taskName = document.getElementById('newTaskInput').value.trim();
+      if (taskName) {
+        const taskList = document.getElementById('taskList');
+        const task = createTaskElement(taskName);
+        taskList.appendChild(task);
+        document.getElementById('newTaskInput').value = '';
+      } else {
+        alert('Por favor, digite o nome da tarefa.');
+      }
+    }
+  </script>
+</body>
+</html>
