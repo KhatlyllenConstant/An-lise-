@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Organização em Projetos</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f8f9fa;
+      margin: 0;
+      padding: 20px;
+      color: #333;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 24px;
+      margin-bottom: 20px;
+      color: #444;
+    }
+
+    .projects {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .project {
+      background-color: #ffffff;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      padding: 15px;
+    }
+
+    .project h2 {
+      font-size: 18px;
+      color: #555;
+      margin-bottom: 10px;
+      border-bottom: 2px solid #eee;
+      padding-bottom: 5px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .project .task-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      min-height: 50px;
+    }
+
+    .task {
+      background-color: #f8f9fa;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      padding: 10px;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .subtasks {
+      list-style: none;
+      margin-top: 10px;
+      padding-left: 20px;
+    }
+
+    .subtask {
+      background-color: #ffffff;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      padding: 8px;
+      margin-top: 5px;
+    }
+
+    .add-task,
+    .add-project {
+      display: flex;
+      margin-top: 10px;
+      gap: 10px;
+    }
+
+    input {
+      flex: 1;
+      padding: 10px;
+      font-size: 14px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    button {
+      padding: 10px 15px;
+      font-size: 14px;
+      border: none;
+      background-color: #6c757d;
+      color: #fff;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #5a6268;
+    }
+  </style>
+</head>
+<body>
+  <h1>Organização em Projetos</h1>
+
+  <!-- Lista de Projetos -->
+  <div class="projects" id="projects"></div>
+
+  <!-- Adicionar novo projeto -->
+  <div class="add-project">
+    <input type="text" id="newProjectInput" placeholder="Digite o nome do novo projeto...">
+    <button onclick="addProject()">Adicionar Projeto</button>
+  </div>
+
+  <script>
+    // Referência à lista de projetos
+    const projectsContainer = document.getElementById('projects');
+
+    // Função para criar um novo projeto
+    function addProject() {
+      const projectName = document.getElementById('newProjectInput').value.trim();
+      if (projectName) {
+        const project = createProjectElement(projectName);
+        projectsContainer.appendChild(project);
+        document.getElementById('newProjectInput').value = '';
+      } else {
+        alert('Por favor, digite o nome do projeto.');
+      }
+    }
+
+    // Função para criar elemento de projeto
+    function createProjectElement(projectName) {
+      const projectDiv = document.createElement('div');
+      projectDiv.classList.add('project');
+
+      // Título do projeto com botão de exclusão
+      const projectHeader = document.createElement('h2');
+      projectHeader.textContent = projectName;
+      const deleteButton = document.createElement('button');
+      deleteButton.textContent = 'Excluir';
+      deleteButton.onclick = () => projectDiv.remove();
+      projectHeader.appendChild(deleteButton);
+
+      // Lista de tarefas
+      const taskList = document.createElement('ul');
+      taskList.classList.add('task-list');
+
+      // Adicionar tarefas ao projeto
+      const addTaskDiv = document.createElement('div');
+      addTaskDiv.classList.add('add-task');
+      const taskInput = document.createElement('input');
+      taskInput.placeholder = 'Digite o nome da tarefa...';
+      const addTaskButton = document.createElement('button');
+      addTaskButton.textContent = 'Adicionar Tarefa';
+      addTaskButton.onclick = () => {
+        const taskName = taskInput.value.trim();
+        if (taskName) {
+          const task = createTaskElement(taskName);
+          taskList.appendChild(task);
+          taskInput.value = '';
+        } else {
+          alert('Por favor, digite o nome da tarefa.');
+        }
+      };
+
+      addTaskDiv.appendChild(taskInput);
+      addTaskDiv.appendChild(addTaskButton);
+
+      // Montar o projeto
+      projectDiv.appendChild(projectHeader);
+      projectDiv.appendChild(taskList);
+      projectDiv.appendChild(addTaskDiv);
+
+      return projectDiv;
+    }
+
+    // Função para criar elemento de tarefa
+    function createTaskElement(taskName) {
+      const taskItem = document.createElement('li');
+      taskItem.classList.add('task');
+
+      // Nome da tarefa
+      const taskContent = document.createElement('span');
+      taskContent.textContent = taskName;
+
+      // Botão para excluir tarefa
+      const deleteButton = document.createElement('button');
+      deleteButton.textContent = 'Excluir';
+      deleteButton.onclick = () => taskItem.remove();
+
+      // Botão para adicionar subtarefa
+      const addSubtaskButton = document.createElement('button');
+      addSubtaskButton.textContent = 'Subtarefa';
+      addSubtaskButton.onclick = () => {
+        const subtaskName = prompt('Digite o nome da subtarefa:');
+        if (subtaskName) {
+          const subtask = createSubtaskElement(subtaskName);
+          const subtasksList = taskItem.querySelector('.subtasks') || createSubtasksList(taskItem);
+          subtasksList.appendChild(subtask);
+        }
+      };
+
+      // Montar a tarefa
+      taskItem.appendChild(taskContent);
+      taskItem.appendChild(addSubtaskButton);
+      taskItem.appendChild(deleteButton);
+
+      return taskItem;
+    }
+
+    // Função para criar lista de subtarefas
+    function createSubtasksList(taskItem) {
+      const subtasksList = document.createElement('ul');
+      subtasksList.classList.add('subtasks');
+      taskItem.appendChild(subtasksList);
+      return subtasksList;
+    }
+
+    // Função para criar elemento de subtarefa
+    function createSubtaskElement(subtaskName) {
+      const subtaskItem = document.createElement('li');
+      subtaskItem.classList.add('subtask');
+      subtaskItem.textContent = subtaskName;
+
+      // Botão para excluir subtarefa
+      const deleteButton = document.createElement('button');
+      deleteButton.textContent = 'Excluir';
+      deleteButton.style.marginLeft = '10px';
+      deleteButton.onclick = () => subtaskItem.remove();
+
+      subtaskItem.appendChild(deleteButton);
+      return subtaskItem;
+    }
+  </script>
+</body>
+</html>
