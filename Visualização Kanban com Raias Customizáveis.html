@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kanban com Raias Customizáveis</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f8f9fa;
+      margin: 0;
+      padding: 20px;
+      color: #333;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 24px;
+      margin-bottom: 20px;
+      color: #444;
+    }
+
+    .kanban {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .kanban-column {
+      width: 300px;
+      background-color: #ffffff;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      padding: 15px;
+      position: relative;
+    }
+
+    .kanban-column h2 {
+      font-size: 18px;
+      color: #555;
+      text-align: center;
+      margin-bottom: 15px;
+      border-bottom: 2px solid #eee;
+      padding-bottom: 5px;
+    }
+
+    .kanban-column .actions {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+    }
+
+    .actions button {
+      background-color: #f44336;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      padding: 5px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    .actions button:hover {
+      background-color: #d32f2f;
+    }
+
+    .task-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      min-height: 100px;
+      background-color: #f8f9fa;
+      border-radius: 5px;
+      border: 2px dashed #ddd;
+    }
+
+    .task {
+      background-color: #ffffff;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      padding: 10px;
+      margin-bottom: 10px;
+      cursor: grab;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      transition: transform 0.2s;
+    }
+
+    .task:active {
+      cursor: grabbing;
+      transform: scale(1.03);
+    }
+
+    .task-list.drag-over {
+      border: 2px dashed #6c757d;
+      background-color: #e9ecef;
+    }
+
+    .add-task {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    .add-task input {
+      flex: 1;
+      padding: 10px;
+      font-size: 14px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      margin-right: 10px;
+    }
+
+    .add-task button {
+      padding: 10px 15px;
+      font-size: 14px;
+      border: none;
+      background-color: #6c757d;
+      color: #fff;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .add-task button:hover {
+      background-color: #5a6268;
+    }
+
+    .add-column {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .add-column input {
+      padding: 10px;
+      font-size: 14px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      margin-right: 10px;
+    }
+
+    .add-column button {
+      padding: 10px 15px;
+      font-size: 14px;
+      border: none;
+      background-color: #007bff;
+      color: #fff;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .add-column button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <h1>Kanban com Raias Customizáveis</h1>
+
+  <div class="kanban" id="kanban">
+    <!-- Colunas obrigatórias -->
+    <div class="kanban-column" data-default="true">
+      <h2>Backlog</h2>
+      <ul class="task-list" id="backlog"></ul>
+    </div>
+    <div class="kanban-column" data-default="true">
+      <h2>In Progress</h2>
+      <ul class="task-list" id="inProgress"></ul>
+    </div>
+    <div class="kanban-column" data-default="true">
+      <h2>Done</h2>
+      <ul class="task-list" id="done"></ul>
+    </div>
+  </div>
+
+  <div class="add-task">
+    <input type="text" id="newTaskInput" placeholder="Digite o nome da nova tarefa...">
+    <button onclick="addTask()">Adicionar Tarefa</button>
+  </div>
+
+  <div class="add-column">
+    <input type="text" id="newColumnInput" placeholder="Digite o nome da nova raia...">
+    <button onclick="addColumn()">Adicionar Raia</button>
+  </div>
+
+  <script>
+    // Função para adicionar uma nova tarefa
+    function addTask() {
+      const taskName = document.getElementById('newTaskInput').value.trim();
+      if (taskName) {
+        const task = createTaskElement(taskName);
+        document.getElementById('backlog').appendChild(task);
+        document.getElementById('newTaskInput').value = '';
+      } else {
+        alert('Por favor, digite o nome da tarefa.');
+      }
+    }
+
+    // Função para criar um elemento de tarefa
+    function createTaskElement(taskName) {
+      const task = document.createElement('li');
+      task.classList.add('task');
+      task.textContent = taskName;
+      task.draggable = true;
+
+      // Eventos de drag and drop
+      task.addEventListener('dragstart', dragStart);
+      task.addEventListener('dragend', dragEnd);
+
+      return task;
+    }
+
+    // Variável para guardar a tarefa sendo arrastada
+    let draggedTask = null;
+
+    function dragStart() {
+      draggedTask = this;
+      setTimeout(() => (this.style.display = 'none'), 0);
+    }
+
+    function dragEnd() {
+      this.style.display = 'block';
+      draggedTask = null;
+    }
+
+    const taskLists = document.querySelectorAll('.task-list');
+    taskLists.forEach((list) => {
+      list.addEventListener('dragover', dragOver);
+      list.addEventListener('dragenter', dragEnter);
+      list.addEventListener('dragleave', dragLeave);
+      list.addEventListener('drop', dragDrop);
+    });
+
+    function dragOver(e) {
+      e.preventDefault();
+    }
+
+    function dragEnter() {
+      this.classList.add('drag-over');
+    }
+
+    function dragLeave() {
+      this.classList.remove('drag-over');
+    }
+
+    function dragDrop() {
+      this.classList.remove('drag-over');
+      if (draggedTask) {
+        this.appendChild(draggedTask);
+      }
+    }
+
+    // Função para adicionar uma nova raia
+    function addColumn() {
+      const columnName = document.getElementById('newColumnInput').value.trim();
+      if (columnName) {
+        const kanban = document.getElementById('kanban');
+
+        const column = document.createElement('div');
+        column.classList.add('kanban-column');
+
+        const header = document.createElement('h2');
+        header.textContent = columnName;
+
+        const actions = document.createElement('div');
+        actions.classList.add('actions');
+
+        const deleteButton = document.createElement('button');
+        deleteButton.textContent = 'Excluir';
+        deleteButton.onclick = function () {
+          if (!column.dataset.default) {
+            kanban.removeChild(column);
+          } else {
+            alert('Não é possível excluir colunas obrigatórias.');
+          }
+        };
+
+        actions.appendChild(deleteButton);
+        column.appendChild(header);
+        column.appendChild(actions);
+
+        const taskList = document.createElement('ul');
+        taskList.classList.add('task-list');
+
+        taskList.addEventListener('dragover', dragOver);
+        taskList.addEventListener('dragenter', dragEnter);
+        taskList.addEventListener('dragleave', dragLeave);
+        taskList.addEventListener('drop', dragDrop);
+
+        column.appendChild(taskList);
+        kanban.appendChild(column);
+
+        document.getElementById('newColumnInput').value = '';
+      } else {
+        alert('Por favor, digite o nome da nova raia.');
+      }
+    }
+  </script>
+</body>
+</html>
