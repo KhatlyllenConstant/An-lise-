@@ -23,10 +23,6 @@ O **To-Do Task Manager** é um aplicativo para controle de tarefas. Ele possibil
 
 ### Reorganização de Tarefas
 - Reorganizar tarefas, alterando sua ordem e prioridades.
-
-### Organização em Projetos
-- Organizar tarefas dentro de projetos, cada projeto contendo suas próprias tarefas e subtarefas.
-- 
 ---
 
 ## Requisitos Não Funcionais
