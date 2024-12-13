@@ -6,12 +6,27 @@ O **To-Do Task Manager** é um aplicativo para controle de tarefas. Ele possibil
 ---
 
 ## Funcionalidades Principais
-- **Adicionar Tarefa**: Criação de tarefas com título, descrição e prazo opcional.
-- **Gerenciar Status**: Alteração do status das tarefas (*Pendente*, *Em Progresso*, *Concluído*).
-- **Kanban com Raias Customizáveis**: Organização visual por categorias ou projetos.
-- **Relacionamento Pai/Filho**: Criação de subtarefas relacionadas a uma tarefa principal.
-- **Gerenciamento de Projetos**: Agrupamento de tarefas em projetos específicos.
 
+### Relacionamento Pai/Filho entre Tarefas
+- Criar hierarquias de tarefas, permitindo que uma tarefa tenha subtarefas.  
+- Subtarefas também podem ter suas próprias subtarefas, formando uma hierarquia ilimitada.
+
+### Movimentação de Tarefas no Kanban
+- Permitir arrastar e soltar tarefas entre as raias para atualizar seu status.
+
+### Visualização Kanban com Raias Customizáveis
+- Visualizar tarefas em um quadro Kanban com raias iniciais: **Backlog**, **In Progress** e **Done**.  
+- Personalizar o Kanban, possibilitando:  
+  - Adicionar novas raias.  
+  - Renomear raias existentes.  
+  - Excluir raias (exceto as obrigatórias).
+
+### Reorganização de Tarefas
+- Reorganizar tarefas, alterando sua ordem e prioridades.
+
+### Organização em Projetos
+- Organizar tarefas dentro de projetos, cada projeto contendo suas próprias tarefas e subtarefas.
+- 
 ---
 
 ## Requisitos Não Funcionais
