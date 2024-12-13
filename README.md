@@ -28,10 +28,28 @@ O **To-Do Task Manager** é um aplicativo para controle de tarefas. Ele possibil
 ---
 
 ## Requisitos Não Funcionais
-- **Performance**: Operações rápidas e eficientes, mesmo com muitos dados.
-- **Responsividade**: Compatível com dispositivos móveis e desktops.
-- **Escalabilidade**: Preparado para múltiplos usuários simultaneamente.
-- **Manutenibilidade**: Código limpo e bem documentado.
+
+1. **Performance**:  
+   - O sistema deve ser capaz de gerenciar múltiplas tarefas, incluindo subtarefas e hierarquias complexas, sem comprometer o desempenho.
+
+2. **Usabilidade**:  
+   - A interface deve ser intuitiva, permitindo a movimentação de tarefas no Kanban por meio de drag-and-drop.  
+   - As opções de personalização (criação e edição de raias) devem ser acessíveis e fáceis de usar.
+
+3. **Escalabilidade**:  
+   - O sistema deve suportar a criação de múltiplos projetos, cada um contendo suas próprias tarefas e subtarefas.
+
+4. **Portabilidade**:  
+   - O sistema deve ser responsivo, funcionando bem em dispositivos móveis, tablets e desktops.
+
+5. **Persistência de Dados**:  
+   - Todas as tarefas, subtarefas, raias e projetos personalizados devem ser armazenados no **LocalStorage**, garantindo que as informações sejam mantidas mesmo após a página ser recarregada.
+
+6. **Manutenibilidade**:  
+   - O código deve ser modular e bem documentado, facilitando futuras melhorias ou correções.
+
+7. **Feedback ao Usuário**:  
+   - O sistema deve fornecer notificações visuais claras (como cores ou animações) para confirmar ações como movimentação, criação ou exclusão de tarefas.
 
 ---
 ## User Stories
