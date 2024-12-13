@@ -1,8 +1,7 @@
 # To-Do Task Manager
 
 ## Descrição
-O **To-Do Task Manager** é uma aplicação para gerenciamento de tarefas. Ele permite aos usuários criar, organizar, atualizar e visualizar tarefas de forma eficiente, com funcionalidades como visualização em Kanban e suporte a projetos.
-
+O **To-Do Task Manager** é um aplicativo para controle de tarefas. Ele possibilita que os usuários criem, organizem, atualizem e vejam tarefas de maneira eficiente, com recursos como visualização em Kanban e apoio a projetos.
 ---
 
 ## Funcionalidades Principais
