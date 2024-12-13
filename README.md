@@ -50,10 +50,6 @@ O **To-Do Task Manager** é uma aplicação para gerenciamento de tarefas. Ele p
 - **Armazenamento**:  
   - **LocalStorage**: Para salvar as tarefas diretamente no navegador, garantindo persistência local.
 
-- **Ferramentas Auxiliares**:  
-  - **VS Code**: Editor de código recomendado.  
-  - **Git**: Controle de versão.  
-  - **GitHub**: Hospedagem do repositório para versionamento e colaboração.
-  - 
+
 
    
