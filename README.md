@@ -41,18 +41,19 @@ O **To-Do Task Manager** é uma aplicação para gerenciamento de tarefas. Ele p
 ---
 
 ## Stack Tecnológica
-- **Frontend**: React.js com Tailwind CSS (se aplicável).
-- **Backend**: Node.js com Express.js.
-- **Banco de Dados**: MongoDB ou PostgreSQL.
-- **Testes**: Jest para backend, Cypress para frontend.
-- **Deploy**: Vercel (frontend) e Heroku (backend).
-- **Gerenciamento**: Jira ou Trello para controle de tarefas.
 
----
+- **Frontend**:  
+  - **HTML5**: Estruturação do layout.  
+  - **CSS3**: Estilização do sistema, utilizando técnicas como Flexbox ou Grid para organizar os elementos.  
+  - **JavaScript**: Implementação da lógica para criação, gerenciamento e movimentação de tarefas.
 
-## Como Rodar o Projeto
-1. Clone o repositório:
-   ```bash
-   git clone https://github.com/seu-usuario/to-do-task-manager.git
-   cd to-do-task-manager
+- **Armazenamento**:  
+  - **LocalStorage**: Para salvar as tarefas diretamente no navegador, garantindo persistência local.
+
+- **Ferramentas Auxiliares**:  
+  - **VS Code**: Editor de código recomendado.  
+  - **Git**: Controle de versão.  
+  - **GitHub**: Hospedagem do repositório para versionamento e colaboração.
+  - 
+
    
